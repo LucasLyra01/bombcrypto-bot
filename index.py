@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-    
+from email.mime import image
 from src.logger import logger, loggerMapClicked
 from cv2 import cv2
 from os import listdir
@@ -301,14 +302,23 @@ def clickFullBarButtons():
     return len(not_working_full_bars)
 
 def goToHeroes():
-    if clickBtn(images['go-back-arrow']):
+
+    if clickBtn(images['button-up']) or clickBtn(images['go-back-arrow']):
         global login_attempts
         login_attempts = 0
 
-    #TODO tirar o sleep quando colocar o pulling
-    time.sleep(1)
-    clickBtn(images['hero-icon'])
-    time.sleep(randint(1,3))
+        time.sleep(1)
+        clickBtn(images['hero-icon2'])
+        time.sleep(randint(1,3))
+
+    # elif clickBtn(images['go-back-arrow']):
+    #     global login_attempts
+    #     login_attempts = 0
+
+    #     #TODO tirar o sleep quando colocar o pulling
+    #     time.sleep(1)
+    #     clickBtn(images['hero-icon'])
+    #     time.sleep(randint(1,3))
 
 def goToGame():
     # in case of server overload popup
@@ -316,7 +326,11 @@ def goToGame():
     # time.sleep(3)
     clickBtn(images['x'])
 
-    clickBtn(images['treasure-hunt-icon'])
+    # clickBtn(images['go-back-arrow'])
+
+    clickBtn(images['melancia'])
+
+    # clickBtn(images['treasure-hunt-icon'])
 
 def refreshHeroesPositions():
 
@@ -447,7 +461,7 @@ def refreshHeroes():
         if buttonsClicked == 0:
             empty_scrolls_attempts = empty_scrolls_attempts - 1
         scroll()
-        time.sleep(2)
+        time.sleep(1)
     logger('💪 {} heroes sent to work'.format(hero_clicks))
     goToGame()
 
@@ -487,9 +501,6 @@ def main():
 
     while True:
         now = time.time()
-
-        if now - last["check_for_captcha"] > addRandomness(t['check_for_captcha'] * 60):
-            last["check_for_captcha"] = now
 
         if now - last["heroes"] > addRandomness(t['send_heroes_for_work'] * 60):
             last["heroes"] = now
